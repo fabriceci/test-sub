@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://src/Scenes/Levels/Main.gd" type="Script" id=1]
 [ext_resource path="res://assets/environment/background.png" type="Texture" id=2]
@@ -9,6 +9,60 @@
 [ext_resource path="res://assets/lights/ray.png" type="Texture" id=7]
 [ext_resource path="res://assets/environment/waterPlant2.png" type="Texture" id=8]
 [ext_resource path="res://icon.png" type="Texture" id=9]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+// Gonkee's water shader for Godot 3 - full tutorial https://youtu.be/uhMAHpV_cDg
+// If you use this shader, I would prefer if you gave credit to me and my channel
+
+uniform vec4 blue_tint : hint_color;
+
+uniform vec2 sprite_scale;
+uniform float scale_x = 0.67;
+
+float rand(vec2 coord){
+	return fract(sin(dot(coord, vec2(12.9898, 78.233)))* 43758.5453123);
+}
+
+float noise(vec2 coord){
+	vec2 i = floor(coord);
+	vec2 f = fract(coord);
+
+	// 4 corners of a rectangle surrounding our point
+	float a = rand(i);
+	float b = rand(i + vec2(1.0, 0.0));
+	float c = rand(i + vec2(0.0, 1.0));
+	float d = rand(i + vec2(1.0, 1.0));
+
+	vec2 cubic = f * f * (3.0 - 2.0 * f);
+
+	return mix(a, b, cubic.x) + (c - a) * cubic.y * (1.0 - cubic.x) + (d - b) * cubic.x * cubic.y;
+}
+
+void fragment(){
+	
+	vec2 noisecoord1 = UV * sprite_scale * scale_x;
+	vec2 noisecoord2 = UV * sprite_scale * scale_x + 4.0;
+	
+	vec2 motion1 = vec2(TIME * 0.3, TIME * -0.4);
+	vec2 motion2 = vec2(TIME * 0.1, TIME * 0.5);
+	
+	vec2 distort1 = vec2(noise(noisecoord1 + motion1), noise(noisecoord2 + motion1)) - vec2(0.5);
+	vec2 distort2 = vec2(noise(noisecoord1 + motion2), noise(noisecoord2 + motion2)) - vec2(0.5);
+	
+	vec2 distort_sum = (distort1 + distort2) / 60.0;
+	
+	vec4 color = textureLod(TEXTURE, UV + distort_sum, 0.0);
+	
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/blue_tint = null
+shader_param/sprite_scale = null
+shader_param/scale_x = 0.67
 
 [sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
@@ -183,7 +237,8 @@ volume_db = -16.596
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color( 0.0666667, 0.0666667, 0.0666667, 1 )
 
-[node name="ray" type="Light2D" parent="."]
+[node name="Exmple3RayShader" type="Light2D" parent="."]
+material = SubResource( 6 )
 position = Vector2( 383, 118.923 )
 rotation = 3.59014
 texture = ExtResource( 7 )
@@ -198,6 +253,7 @@ scale = Vector2( 1.58747, 1.57383 )
 texture = ExtResource( 8 )
 
 [node name="Exemple1Globale" type="Sprite" parent="."]
+visible = false
 material = SubResource( 2 )
 position = Vector2( 300.36, 195.943 )
 scale = Vector2( 9.27974, 6.3832 )
