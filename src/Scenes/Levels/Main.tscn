@@ -10,7 +10,7 @@
 [ext_resource path="res://assets/environment/waterPlant2.png" type="Texture" id=8]
 [ext_resource path="res://icon.png" type="Texture" id=9]
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 // Gonkee's water shader for Godot 3 - full tutorial https://youtu.be/uhMAHpV_cDg
@@ -58,8 +58,8 @@ void fragment(){
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/blue_tint = null
 shader_param/sprite_scale = null
 shader_param/scale_x = 0.67
@@ -118,7 +118,7 @@ shader_param/blue_tint = null
 shader_param/sprite_scale = Vector2( 2, 2 )
 shader_param/scale_x = 1.04
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=5]
 code = "shader_type canvas_item;
 
 // Gonkee's water shader for Godot 3 - full tutorial https://youtu.be/uhMAHpV_cDg
@@ -166,8 +166,8 @@ void fragment(){
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
 shader_param/blue_tint = null
 shader_param/sprite_scale = Vector2( 2, 2 )
 shader_param/scale_x = 1.42
@@ -191,7 +191,6 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1152, 512 )
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
-editor/display_folded = true
 modulate = Color( 0.411765, 0.411765, 0.411765, 1 )
 motion_scale = Vector2( 0.15, 0.15 )
 motion_offset = Vector2( -100, 0 )
@@ -203,6 +202,7 @@ centered = false
 
 [node name="Mine" parent="." instance=ExtResource( 4 )]
 position = Vector2( 204.701, 203.896 )
+size = "small"
 
 [node name="Mine2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 254.701, 155.896 )
@@ -238,7 +238,7 @@ volume_db = -16.596
 color = Color( 0.0666667, 0.0666667, 0.0666667, 1 )
 
 [node name="Exmple3RayShader" type="Light2D" parent="."]
-material = SubResource( 6 )
+material = SubResource( 2 )
 position = Vector2( 383, 118.923 )
 rotation = 3.59014
 texture = ExtResource( 7 )
@@ -254,7 +254,7 @@ texture = ExtResource( 8 )
 
 [node name="Exemple1Globale" type="Sprite" parent="."]
 visible = false
-material = SubResource( 2 )
+material = SubResource( 6 )
 position = Vector2( 300.36, 195.943 )
 scale = Vector2( 9.27974, 6.3832 )
 texture = ExtResource( 9 )
